@@ -8,21 +8,27 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 
+import com.qgs.eatuul.constants.FilterType;
 import com.qgs.eatuul.filter.EatuulFilter;
 import com.qgs.eatuul.http.RequestContext;
+import com.qgs.eatuul.log.Log;
 
 public class RequestWrapperFilter extends EatuulFilter{
 
+	@Log
+	Logger log;
+	
     @Override
     public String filterType() {
         // TODO Auto-generated method stub
-        return "pre";
+        return FilterType.PRE;
     }
 
     @Override
@@ -33,6 +39,7 @@ public class RequestWrapperFilter extends EatuulFilter{
 
     @Override
     public void run() {
+    	log.info("=========RequestWrapperFilter Start=========");
         String rootURL = "http://localhost:9090";
         RequestContext ctx =RequestContext.getCurrentContext();
         HttpServletRequest servletRequest = ctx.getRequest();

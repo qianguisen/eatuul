@@ -5,17 +5,22 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import com.qgs.eatuul.constants.FilterType;
 import com.qgs.eatuul.filter.EatuulFilter;
 import com.qgs.eatuul.http.RequestContext;
+import com.qgs.eatuul.log.Log;
 
 public class SendResponseFilter extends EatuulFilter{
-
+	@Log
+	Logger log;
+	
     @Override
     public String filterType() {
-        return "post";
+        return FilterType.POST;
     }
 
     @Override
@@ -26,6 +31,7 @@ public class SendResponseFilter extends EatuulFilter{
     @Override
     public void run() {
         try {
+        	log.info("=========SendResponseFilter Start=========");
             addResponseHeaders();
             writeResponse();
         } catch (Exception e) {
