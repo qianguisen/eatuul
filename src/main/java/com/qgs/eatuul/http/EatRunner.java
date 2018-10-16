@@ -3,6 +3,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.qgs.eatuul.config.FilterProcessor;
+import com.qgs.eatuul.exception.ZuulException;
 /**
  * 
  * @Description: 执行filter （动态获取所有filter）
@@ -29,19 +30,26 @@ public class EatRunner {
         ctx.setResponse(resp);
     }
 
-    public void preRoute() throws Throwable {
+    public void preRoute() throws ZuulException {
     //    runFilters("pre");  
     	FilterProcessor.getInstance().preRoute();
     }
 
-    public void route() throws Throwable{
+    public void route() throws ZuulException{
      //   runFilters("route");   
     	FilterProcessor.getInstance().route();
     }
 
-    public void postRoute() throws Throwable{
+    public void postRoute() throws ZuulException{
     //    runFilters("post");
     	FilterProcessor.getInstance().postRoute();
+    }
+    
+    /**
+     * executes "error" filterType  ZuulFilters
+     */
+    public void error() {
+        FilterProcessor.getInstance().error();
     }
 
 //     public void runFilters(String sType) throws Throwable {

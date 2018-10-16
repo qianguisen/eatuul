@@ -4,8 +4,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.qgs.eatuul.exception.ZuulException;
 import com.qgs.eatuul.filter.EatuulFilter;
-import com.qgs.eatuul.http.RequestContext;
 
 /**
  * This the the core class to execute filters.
@@ -34,20 +34,19 @@ public class FilterProcessor {
     }
 
     /**
-     * runs "post" filters which are called after "route" filters. ZuulExceptions from EatuulFilters are thrown.
+     * runs "post" filters which are called after "route" filters. ZuulExceptions from ZuulFilters are thrown.
      * Any other Throwables are caught and a ZuulException is thrown out with a 500 status code
      *
      * @throws ZuulException
      */
-    public void postRoute() throws Exception {
-      
-            try {
-				runFilters("post");
-			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-       
+    public void postRoute() throws ZuulException {
+        try {
+            runFilters("post");
+        } catch (ZuulException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ZuulException(e, 500, "UNCAUGHT_EXCEPTION_IN_POST_FILTER_" + e.getClass().getName());
+        }
     }
 
     /**
@@ -66,11 +65,13 @@ public class FilterProcessor {
      *
      * @throws ZuulException if an exception occurs.
      */
-    public void route() throws Exception {
+    public void route() throws ZuulException {
         try {
             runFilters("route");
+        } catch (ZuulException e) {
+            throw e;
         } catch (Throwable e) {
-        	e.printStackTrace();
+            throw new ZuulException(e, 500, "UNCAUGHT_EXCEPTION_IN_ROUTE_FILTER_" + e.getClass().getName());
         }
     }
 
@@ -79,11 +80,13 @@ public class FilterProcessor {
      *
      * @throws ZuulException
      */
-    public void preRoute() throws Exception {
+    public void preRoute() throws ZuulException {
         try {
             runFilters("pre");
+        } catch (ZuulException e) {
+            throw e;
         } catch (Throwable e) {
-            
+            throw new ZuulException(e, 500, "UNCAUGHT_EXCEPTION_IN_PRE_FILTER_" + e.getClass().getName());
         }
     }
 
@@ -103,11 +106,14 @@ public class FilterProcessor {
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
                 EatuulFilter eatuulFilter = list.get(i);
+                long ltime = System.currentTimeMillis();
           //      Object result = processEatuulFilter(EatuulFilter);
                 eatuulFilter.run();
 //                if (result != null && result instanceof Boolean) {
 //                    bResult |= ((Boolean) result);
 //                }
+                long execTime = System.currentTimeMillis() - ltime;
+                logger.info("[{}] execute {}ms", eatuulFilter.getClass().getName(), execTime);
                 bResult = true;
             }
         }
