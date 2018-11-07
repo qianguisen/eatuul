@@ -19,17 +19,23 @@ public class TestPreFilter extends EatuulFilter{
 	}
 
 	@Override
+	public boolean shouldFilter() {
+		return true;
+	}
+
+	@Override
 	public int filterOrder() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public void run() {
+	public Object run() {
 		log.info("=========TestPreFilter Start=========");
 		// TODO Auto-generated method stub
 		RequestContext context = RequestContext.getCurrentContext();
 		System.out.println("Test" + context);
+		return null;
 	}
 
 }

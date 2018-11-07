@@ -38,7 +38,12 @@ public class RequestWrapperFilter extends EatuulFilter{
     }
 
     @Override
-    public void run() {
+    public boolean shouldFilter() {
+        return true;
+    }
+
+    @Override
+    public Object run() {
     	log.info("=========RequestWrapperFilter Start=========");
         String rootURL = "http://localhost:9090";
         RequestContext ctx =RequestContext.getCurrentContext();
@@ -52,6 +57,8 @@ public class RequestWrapperFilter extends EatuulFilter{
         }
         //4、将requestEntity放入全局threadlocal之中
         ctx.setRequestEntity(requestEntity);
+
+        return null;
     }
 
     private RequestEntity createRequestEntity(HttpServletRequest request,String url) throws URISyntaxException, IOException {

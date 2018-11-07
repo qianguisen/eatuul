@@ -1,0 +1,8 @@
+#server.port=8090
+
+eatuul:
+  routes: 
+    aaaa:
+      path: /eatuul/**
+      serviceId: protal
+      stripPrefix: false

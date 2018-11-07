@@ -62,6 +62,7 @@ public class EatuulServlet extends HttpServlet {
 
 	private void error(ZuulException e) throws ZuulException{
 		// 执行过滤
+		RequestContext.getCurrentContext().setThrowable(e);
 		eatRunner.error();
 	}
 

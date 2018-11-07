@@ -60,6 +60,26 @@ public class RequestContext extends ConcurrentHashMap<String, Object> {
         return (ResponseEntity) get("responseEntity");
     }
 
+    /**
+     * returns a set throwable
+     *
+     * @return a set throwable
+     */
+    public Throwable getThrowable() {
+        return (Throwable) get("throwable");
+
+    }
+
+    /**
+     * sets a throwable
+     *
+     * @param th
+     */
+    public void setThrowable(Throwable th) {
+        put("throwable", th);
+
+    }
+
     public void set(String key, Object value) {
         if (value != null)
             put(key, value);

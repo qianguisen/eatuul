@@ -29,7 +29,13 @@ public class SendResponseFilter extends EatuulFilter{
     }
 
     @Override
-    public void run() {
+    public boolean shouldFilter() {
+        RequestContext context = RequestContext.getCurrentContext();
+        return context.getThrowable() == null;
+    }
+
+    @Override
+    public Object run() {
         try {
         	log.info("=========SendResponseFilter Start=========");
             addResponseHeaders();
@@ -37,6 +43,7 @@ public class SendResponseFilter extends EatuulFilter{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private void addResponseHeaders() {

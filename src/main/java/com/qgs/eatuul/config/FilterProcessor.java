@@ -1,6 +1,9 @@
 package com.qgs.eatuul.config;
 import java.util.List;
 
+import com.qgs.eatuul.filter.ExecutionStatus;
+import com.qgs.eatuul.filter.ZuulFilterResult;
+import com.qgs.eatuul.http.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,11 +110,11 @@ public class FilterProcessor {
             for (int i = 0; i < list.size(); i++) {
                 EatuulFilter eatuulFilter = list.get(i);
                 long ltime = System.currentTimeMillis();
-          //      Object result = processEatuulFilter(EatuulFilter);
-                eatuulFilter.run();
-//                if (result != null && result instanceof Boolean) {
-//                    bResult |= ((Boolean) result);
-//                }
+                Object result = processEatuulFilter(eatuulFilter);
+           //     Object result =  eatuulFilter.run();
+               if (result != null && result instanceof Boolean) {
+                   bResult |= ((Boolean) result);
+               }
                 long execTime = System.currentTimeMillis() - ltime;
                 logger.info("[{}] execute {}ms", eatuulFilter.getClass().getName(), execTime);
                 bResult = true;
@@ -127,66 +130,54 @@ public class FilterProcessor {
      * @return the return value for that filter
      * @throws ZuulException
      */
-//    public Object processEatuulFilter(EatuulFilter filter) throws Exception {
-//
-//        RequestContext ctx = RequestContext.getCurrentContext();
-////        boolean bDebug = ctx.debugRouting();
-//        final String metricPrefix = "zuul.filter-";
-//        long execTime = 0;
-//        String filterName = "";
-//        try {
-//            long ltime = System.currentTimeMillis();
-//            filterName = filter.getClass().getSimpleName();
-//            
-//            RequestContext copy = null;
-//            Object o = null;
-//            Throwable t = null;
-//
-////            if (bDebug) {
-////                Debug.addRoutingDebug("Filter " + filter.filterType() + " " + filter.filterOrder() + " " + filterName);
-////                copy = ctx.copy();
-////            }
-//            
-//            EatuulFilterResult result = filter.runFilter();
-//            ExecutionStatus s = result.getStatus();
-//            execTime = System.currentTimeMillis() - ltime;
-//
-//            switch (s) {
-//                case FAILED:
-//                    t = result.getException();
-//                    ctx.addFilterExecutionSummary(filterName, ExecutionStatus.FAILED.name(), execTime);
-//                    break;
-//                case SUCCESS:
-//                    o = result.getResult();
-//                    ctx.addFilterExecutionSummary(filterName, ExecutionStatus.SUCCESS.name(), execTime);
-//                    if (bDebug) {
-//                        Debug.addRoutingDebug("Filter {" + filterName + " TYPE:" + filter.filterType() + " ORDER:" + filter.filterOrder() + "} Execution time = " + execTime + "ms");
-//                        Debug.compareContextState(filterName, copy);
-//                    }
-//                    break;
-//                default:
-//                    break;
-//            }
-//            
-//            if (t != null) throw t;
-//
-//            usageNotifier.notify(filter, s);
-//            return o;
-//
-//        } catch (Throwable e) {
+    public Object processEatuulFilter(EatuulFilter filter) throws Exception {
+
+        RequestContext ctx = RequestContext.getCurrentContext();
+//        boolean bDebug = ctx.debugRouting();
+        final String metricPrefix = "zuul.filter-";
+        long execTime = 0;
+        String filterName = "";
+        try {
+            long ltime = System.currentTimeMillis();
+            filterName = filter.getClass().getSimpleName();
+
+            RequestContext copy = null;
+            Object o = null;
+            Throwable t = null;
+
 //            if (bDebug) {
-//                Debug.addRoutingDebug("Running Filter failed " + filterName + " type:" + filter.filterType() + " order:" + filter.filterOrder() + " " + e.getMessage());
+//                Debug.addRoutingDebug("Filter " + filter.filterType() + " " + filter.filterOrder() + " " + filterName);
+//                copy = ctx.copy();
 //            }
-//            usageNotifier.notify(filter, ExecutionStatus.FAILED);
-//            if (e instanceof ZuulException) {
-//                throw (ZuulException) e;
-//            } else {
-//                ZuulException ex = new ZuulException(e, "Filter threw Exception", 500, filter.filterType() + ":" + filterName);
-//                ctx.addFilterExecutionSummary(filterName, ExecutionStatus.FAILED.name(), execTime);
-//                throw ex;
-//            }
-//        }
-//    }
+
+            ZuulFilterResult result = filter.runFilter();
+            ExecutionStatus s = result.getStatus();
+            execTime = System.currentTimeMillis() - ltime;
+
+           switch (s) {
+               case FAILED:
+                    t = result.getException();
+                   break;
+                case SUCCESS:
+                    o = result.getResult();
+                    break;
+               default:
+                    break;
+           }
+
+            if (t != null) throw t;
+
+            return o;
+
+        } catch (Throwable e) {
+            if (e instanceof ZuulException) {
+                throw (ZuulException) e;
+            } else {
+                ZuulException ex = new ZuulException(e, "Filter threw Exception", 500, filter.filterType() + ":" + filterName);
+                throw ex;
+            }
+        }
+    }
 
 
  
