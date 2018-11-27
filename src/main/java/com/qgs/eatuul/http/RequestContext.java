@@ -1,4 +1,5 @@
 package com.qgs.eatuul.http;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * @Description: TODO
+ * @author: qianguisen
+ * @Date: 2018/11/8 9:04
+ **/
 public class RequestContext extends ConcurrentHashMap<String, Object> {
     protected static Class<? extends RequestContext> contextClass = RequestContext.class;
     protected static final ThreadLocal<? extends RequestContext> threadLocal = new ThreadLocal<RequestContext>() {
@@ -44,16 +50,16 @@ public class RequestContext extends ConcurrentHashMap<String, Object> {
     }
 
 
-    public void setRequestEntity(RequestEntity requestEntity){
-        set("requestEntity",requestEntity);
+    public void setRequestEntity(RequestEntity requestEntity) {
+        set("requestEntity", requestEntity);
     }
 
     public RequestEntity getRequestEntity() {
         return (RequestEntity) get("requestEntity");
     }
 
-    public void setResponseEntity(ResponseEntity responseEntity){
-        set("responseEntity",responseEntity);
+    public void setResponseEntity(ResponseEntity responseEntity) {
+        set("responseEntity", responseEntity);
     }
 
     public ResponseEntity getResponseEntity() {

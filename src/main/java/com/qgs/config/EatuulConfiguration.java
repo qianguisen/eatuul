@@ -3,6 +3,7 @@ package com.qgs.config;
 import java.util.Map;
 
 import com.qgs.eatuul.filter.error.SendErrorFilter;
+import com.qgs.eatuul.filter.pre.RedisLockFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,12 @@ import com.qgs.eatuul.filter.route.RestRoutingFilter;
 @Configuration
 @EnableConfigurationProperties({ ZuulProperties.class })
 public class EatuulConfiguration {
-	
+
+	@Bean
+	public RedisLockFilter redisLockFilter() {
+		return new RedisLockFilter();
+	}
+
 	@Bean
 	public RequestWrapperFilter requestWrapperFilter() {
 		return new RequestWrapperFilter();

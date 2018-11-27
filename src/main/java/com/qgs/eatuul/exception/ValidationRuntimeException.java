@@ -1,9 +1,10 @@
 package com.qgs.eatuul.exception;
 
 /**
- * @author awlwen
- * @since 2017/5/16.
- */
+ * @Description: TODO
+ * @author: qianguisen
+ * @Date: 2018/11/8 10:35
+ **/
 public class ValidationRuntimeException extends RuntimeException{
     private Object[] args;
 

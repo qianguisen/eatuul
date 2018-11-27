@@ -12,9 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author awlwen
- * @since 2017/5/18.
- */
+ * @Description: TODO
+ * @author: qianguisen
+ * @Date: 2018/11/8 9:59
+ **/
 @Controller
 public class CustomErrorController implements ErrorController {
     private static final String DEFAULT_CODE = "999999";
@@ -26,11 +27,11 @@ public class CustomErrorController implements ErrorController {
 
 
     @RequestMapping("/error")
-    @ResponseBody
-    public OutboundPacket Json(HttpServletResponse response) throws ValidationRuntimeException{
-        RequestContext context = RequestContext.getCurrentContext();
-        HttpServletRequest request = context.getRequest();
-        String message = DEFAULT_MSG;
+        @ResponseBody
+        public OutboundPacket Json(HttpServletResponse response) throws ValidationRuntimeException{
+            RequestContext context = RequestContext.getCurrentContext();
+            HttpServletRequest request = context.getRequest();
+            String message = DEFAULT_MSG;
         String code = DEFAULT_CODE;
 
         if(request == null){

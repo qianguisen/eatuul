@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import com.qgs.eatuul.exception.ZuulException;
-
+/**
+ * @Description: TODO
+ * @author: qianguisen
+ * @Date: 2018/11/8 9:44
+ **/
 @WebServlet(name = "eatuul", urlPatterns = "/eat/*")
 public class EatuulServlet extends HttpServlet {
 
