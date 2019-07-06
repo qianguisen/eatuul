@@ -52,7 +52,7 @@ public class OutboundPacket {
 		return serialNo;
 	}
 	public void setSerialNo(String serialNo) {
-		this.serialNo = serialNo;
+		serialNo = serialNo;
 	}
 	public String getPayload() {
 		return payload;

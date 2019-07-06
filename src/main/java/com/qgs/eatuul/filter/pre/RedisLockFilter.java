@@ -32,7 +32,7 @@ public class RedisLockFilter extends EatuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return true;
+        return false;
     }
 
     @Override

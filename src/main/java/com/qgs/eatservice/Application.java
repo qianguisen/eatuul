@@ -7,6 +7,7 @@ import com.qgs.eatservice.controller.IndexController;
 
 @SpringBootApplication
 @ServletComponentScan(basePackageClasses = IndexController.class)
+//@EnableGatewayGlobal
 public class Application {
 
     public static void main(String[] args) {

@@ -1,2 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.qgs.config.EatuulConfiguration
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+#com.qgs.config.EatuulConfiguration
